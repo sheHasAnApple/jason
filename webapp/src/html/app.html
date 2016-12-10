@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name = "format-detection" content = "telephone=no">
+    <title></title>
+    <script src="../bundle/responsive.js"></script>
+    <link rel="stylesheet" href="../style/app.css">
+</head>
+<body>
+    <div id="view" class="view">
+        <!--<transition name="slide">-->
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
+        <!--</transition>-->
+        <page-loading></page-loading>
+    </div>
+    <script src="../bundle/LSresourceLoader.js"></script>
+</body>
+</html>

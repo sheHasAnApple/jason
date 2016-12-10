@@ -1,0 +1,33 @@
+//单行文字溢出显示省略号
+@mixin text-overflow {
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+//多行文字溢出显示省略号
+@mixin multi-text-overflow{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow : hidden;
+  text-overflow: ellipsis;
+}
+
+//清除浮动
+@mixin clear-float{
+  display:table;
+  content:"";
+  clear:both;
+}
+
+@mixin font-size-0{
+  font-size: 0 !important;
+  -webkit-text-size-adjust:none;
+}
+
+@mixin height-1px{
+  font-size: 0 !important;
+  -webkit-text-size-adjust:none;
+  height: 1px;
+}

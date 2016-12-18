@@ -103,20 +103,3 @@ var LSresourceLoader = function(options){
 
     return new constructor(options);
 };
-
-var quantity = 3;
-LSresourceLoader({
-    url:'../bundle/zepto.js',
-    no:0,
-    ver:'201611272346'
-});
-LSresourceLoader({
-    url:'../bundle/common.js',
-    no:1,
-    ver:'refresh'
-});
-LSresourceLoader({
-    url:'../bundle/app.js',
-    no:2,
-    ver:'refresh'
-});

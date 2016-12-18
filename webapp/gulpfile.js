@@ -1,7 +1,8 @@
-var gulp = require("gulp");
+﻿var gulp = require("gulp");
 var gutil = require("gulp-util");
 var del = require("del");
 var rename = require("gulp-rename");
+var uglify = require("gulp-uglify");
 var sass = require("gulp-sass");
 var autoprefixer = require("gulp-autoprefixer");
 var newer = require("gulp-newer");
@@ -11,7 +12,9 @@ var imagemin = require('gulp-imagemin');
 var bs = require('browser-sync').create();
 //webpack
 var webpack = require("webpack");
+var webpackStream = require("webpack-stream");
 var webpackConfig = require("./webpack.config.js");
+var path = require('path');
 
 //源文件路径和目标文件路径
 var src = {
@@ -34,21 +37,30 @@ function clean(done){
 }
 
 //拷贝
-function html(){
+function copyHtml(){
     return gulp.src(src.html)
         .pipe(newer(dest.html))
         .pipe(gulp.dest(dest.html));
 }
-function fonts(){
+function copyJs(){
+    return gulp.src([
+            'src/js/modules/responsive.js',
+            'src/js/modules/LSresourceLoader.js',
+            'src/js/vendor/zepto.js'
+        ])
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'));
+}
+function copyFonts(){
     return gulp.src(src.fonts)
         .pipe(gulp.dest(dest.fonts));
 }
-function imgmin(){
+function copyImg(){
     return gulp.src(src.img)
         .pipe(imagemin())
         .pipe(gulp.dest(dest.img));
 }
-exports.imgmin = imgmin;
 
 //编译sass
 function style(){
@@ -79,46 +91,86 @@ exports.style = style;
 
 //代码监控
 function watcher() {
-    gulp.watch("src/html/**/*.html",html);
+    gulp.watch("src/html/**/*.html",copyHtml);
     gulp.watch("dist/html/**/*.html").on("change",bs.reload);
     gulp.watch("src/style/**/*.scss", style);
-    gulp.watch('dist/bundle/*.*').on("change",bs.reload);
+    gulp.watch('dist/js/*.js').on("change",bs.reload);
 }
 
 //browserSync
 function server(){
     bs.init({
-        proxy: "192.168.3.5"
+        proxy: "http://localhost"
     });
     watcher();
 }
 
 //webpack development
-function webpackDev(done) {
+function webpackWatch() {
     var devConfig = Object.create(webpackConfig);
-    devConfig.debug = true;
+    devConfig.output.filename = '[name].js';
+    devConfig.output.chunkFilename = '[id].chunk.js';
+    devConfig.plugins = devConfig.plugins.concat(
+        new webpack.optimize.CommonsChunkPlugin({
+            name:["common"],
+            filename:"[name].js",
+            minChunks: Infinity
+        })
+    );
     devConfig.devtool = "sourcemap";
+    devConfig.watch = true;
+    return gulp.src('src/js/app.js')
+        .pipe(webpackStream(devConfig,null,function(err,stats){
+            if (err) {
+                throw new gutil.PluginError("webpack:build-dev", err);
+            }
+            gutil.log("[webpack:build-dev]", stats.toString({
+                colors: true
+            }));
+        }))
+        .pipe(gulp.dest('dist/js/'));
+}
 
-    var devCompiler = webpack(devConfig);
+//webpack bundle
+function webpackBundle(done){
+    var bundleConfig = Object.create(webpackConfig);
+    bundleConfig.output.path = path.join(__dirname, './dist/js');
+    bundleConfig.output.filename = '[name].js';
+    bundleConfig.output.chunkFilename = '[id].chunk.js';
+    bundleConfig.plugins = bundleConfig.plugins.concat(
+        new webpack.optimize.CommonsChunkPlugin({
+            name:["common"],
+            filename:"[name].js",
+            minChunks: Infinity
+        })
+    );
+    bundleConfig.devtool = "sourcemap";
 
-    devCompiler.run(function(err, stats) {
+    var bundleCompiler = webpack(bundleConfig);
+    bundleCompiler.run(function(err, stats) {
         if (err) {
-            throw new gutil.PluginError("webpack:build-dev", err);
+            throw new gutil.PluginError("webpack:build-bundle", err);
             return;
         }
-        gutil.log("[webpack:build-dev]", stats.toString({
+        gutil.log("[webpack:build-bundle]", stats.toString({
             colors: true
         }));
         done();
     });
 }
-exports.webpackDev = webpackDev;
 
 //webpack production
 function webpackPro(done) {
     var config = Object.create(webpackConfig);
-    config.devtool = "";
+    config.output.path = path.join(__dirname, './dist/js');
+    config.output.filename = '[name].min.js';
+    config.output.chunkFilename = '[id].chunk.min.js';
     config.plugins = config.plugins.concat(
+        new webpack.optimize.CommonsChunkPlugin({
+            name:["common"],
+            filename:"[name].min.js",
+            minChunks: Infinity
+        }),
         new webpack.DefinePlugin({
             "process.env": {
                 "NODE_ENV": JSON.stringify("production")
@@ -143,12 +195,11 @@ function webpackPro(done) {
         done();
     });
 }
-exports.webpackPro = webpackPro;
 
 //发布任务
 gulp.task("build", gulp.series(
     clean,
-    gulp.parallel(html,fonts,imgmin,style),
+    gulp.parallel(copyHtml,copyJs,copyFonts,copyImg,style),
     webpackPro,
     function(done) {
         console.log('build success');
@@ -156,10 +207,15 @@ gulp.task("build", gulp.series(
     }
 ));
 
+//webpack-watch
+gulp.task('webpack-watch',function(){
+    webpackWatch();
+});
+
 //默认任务
-gulp.task("default", gulp.series(
+gulp.task("dev", gulp.series(
     clean,
-    gulp.parallel(html,fonts,imgmin,style),
-    webpackDev,
+    gulp.parallel(copyHtml,copyJs,copyFonts,copyImg,style),
+    webpackBundle,
     server
 ));

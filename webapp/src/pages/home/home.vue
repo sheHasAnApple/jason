@@ -17,7 +17,14 @@
                         <div class="right">
                             <div class="text">
                                 <h6 class="name">1111专注公版-602-休闲工装鞋子36-42</h6>
-
+                                <div class="attention">
+                                    <span class="tip">专注公版</span>
+                                    <a class="opera">
+                                        <div class="icon-box flex-cm">
+                                            <i class="iconfont">&#xe600;</i>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="bottom-line"></div>

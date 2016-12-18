@@ -40,6 +40,30 @@
           @include multi-text-overflow;
           margin-bottom:px2rem(6);
         }
+        .attention{
+          overflow: hidden;
+          .tip{
+            display:block;
+            float: left;
+            line-height: 16px;
+            font-size:10px;
+          }
+          .opera{
+            position: relative;
+            float: right;
+            width: 58px; height: 16px;
+            background-color:#F3F5F7;
+            .icon-box{
+              position: absolute; top:0; left:0;
+              width: 16px; height: 16px;
+              background-color:inherit;
+              .iconfont{
+                display:block;
+                font-size:8px;
+              }
+            }
+          }
+        }
       }
     }
     .bottom-line{

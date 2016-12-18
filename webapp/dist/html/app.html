@@ -5,18 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name = "format-detection" content = "telephone=no">
     <title></title>
-    <script src="../bundle/responsive.js"></script>
+    <script src="../js/responsive.min.js"></script>
     <link rel="stylesheet" href="../style/app.css">
 </head>
 <body>
     <div id="view" class="view">
-        <!--<transition name="slide">-->
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
-        <!--</transition>-->
         <page-loading></page-loading>
     </div>
-    <script src="../bundle/LSresourceLoader.js"></script>
+    <script src="../js/LSresourceLoader.min.js"></script>
+    <script>
+        var quantity = 3;
+        LSresourceLoader({
+            url:'../js/zepto.min.js',
+            no:0,
+            ver:'201611272346'
+        });
+        LSresourceLoader({
+            url:'../js/common.js',
+            no:1,
+            ver:'refresh'
+        });
+        LSresourceLoader({
+            url:'../js/app.js',
+            no:2,
+            ver:'refresh'
+        });
+    </script>
 </body>
 </html>

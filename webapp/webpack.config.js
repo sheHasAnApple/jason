@@ -1,24 +1,19 @@
 var webpack = require('webpack');
 var path = require("path");
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var config = {
     entry:{
-        common:[
+        "common":[
             "babel-polyfill",
             "vue",
             "vue-router",
             "vuex",
             "mint-ui"
         ],
-        app:"./src/js/app.js"
+        "app":"./src/js/app.js"
     },
     output : {
-        path : path.join(__dirname, './dist/bundle'),
-        filename : '[name].js',
-        chunkFilename : '[id].chunk.js',
-        publicPath : "../bundle/"
+        publicPath : "../js/"
     },
     module:{
         loaders:[
@@ -51,28 +46,6 @@ var config = {
             'utils':path.join(__dirname, './src/js/modules/utils.js')
         }
     },
-    plugins:[
-        new ExtractTextPlugin("mint-ui.css"),
-        new CopyWebpackPlugin([
-            {
-                from: './src/js/modules/responsive.js',
-                to:'responsive.js'
-            },
-            {
-                from: './src/js/modules/LSresourceLoader.js',
-                to:'LSresourceLoader.js'
-            },
-            {
-                from: './src/js/vendor/zepto.js',
-                to:'zepto.js'
-            }
-        ]),
-        new webpack.optimize.CommonsChunkPlugin({
-            name:["common"],
-            filename:"[name].js",
-            minChunks: Infinity
-        })
-    ],
-    devtool:"sourcemap"
+    plugins:[]
 };
-module.exports = config;
+exports = module.exports = config;

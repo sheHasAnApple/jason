@@ -61,7 +61,7 @@
     [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
     
     JZTextField *searchField = [[JZTextField alloc]initWithFrame:CGRectMake(0, 0, 270, 25)];
-    [searchField setBackgroundColor:[UIColor colorWithRed:243/255.0 green:245/255.0 blue:247/255.0 alpha:1.0] isRightBtn:YES isLeftBtn:YES placeholder:@"请输入商品名称"];
+    [searchField setBackgroundColor:[UIColor colorWithRed:243/255.0 green:245/255.0 blue:247/255.0 alpha:1.0] isRightBtn:_showCamera isLeftBtn:YES placeholder:@"请输入商品名称"];
     self.searchField = searchField;
     self.searchField.delegate = self;
     self.navigationItem.titleView = searchField;

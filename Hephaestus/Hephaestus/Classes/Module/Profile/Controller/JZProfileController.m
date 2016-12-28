@@ -11,6 +11,7 @@
 #import "JZButtonsCell.h"
 #import "JZDefaultCell.h"
 #import "JZPublicController.h"
+#import "JZUserViewController.h"
 #import "TBCityIconFont.h"
 
 @interface JZProfileController ()<UITableViewDelegate,UITableViewDataSource,JZButtonsCellDelegate>
@@ -45,7 +46,9 @@
 //设置tableVeiw
 -(void)setUpTableView
 {
-    self.tableview = [[UITableView alloc]initWithFrame:self.view.frame];
+    CGRect rect = self.view.frame;
+    rect.size.height -= 49;
+    self.tableview = [[UITableView alloc]initWithFrame:rect];
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.bounces = NO;
     self.tableview.delegate = self;
@@ -69,6 +72,8 @@
     
     JZButtonsCell *bCell = [JZButtonsCell cellWithTableView:tableView];
     bCell.delegate = self;
+    NSArray *arr = @[@"发布动态",@"我的相册",@"我的关注圈"];
+    bCell.titlesArr = arr;
     
     JZDefaultCell *dCell = [JZDefaultCell cellWithTableView:tableView];
     
@@ -103,21 +108,19 @@
 #pragma mark - JZButtonsCell代理
 -(void)JZButtonsCellDidClick:(JZButtonsCell *)buttonsCell withIndex:(NSInteger)index
 {
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
+    
+    self.hidesBottomBarWhenPushed = YES;
     if (index == 11) {
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
-        
-        self.hidesBottomBarWhenPushed = YES;
         JZPublicController *puVC = [[JZPublicController alloc]init];
-        
         [self.navigationController pushViewController:puVC animated:YES];
-        
-        self.hidesBottomBarWhenPushed = NO;
-        
     }else if (index == 12) {
         NSLog(@"12");
     }else if (index == 13) {
-        NSLog(@"13");
+        JZUserViewController *usVC = [[JZUserViewController alloc]init];
+        [self.navigationController pushViewController:usVC animated:YES];
     }
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 @end

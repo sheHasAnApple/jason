@@ -16,12 +16,13 @@
 @end
 
 @interface JZButtonsCell : UITableViewCell
-
 @property (nonatomic,weak) JZButton *publish;
 @property (nonatomic,weak) JZButton *myAlbum;
 @property (nonatomic,weak) JZButton *myConcern;
+@property (nonatomic ,strong) NSArray *titlesArr;
 @property (nonatomic,weak) id<JZButtonsCellDelegate> delegate;
 
 +(instancetype)cellWithTableView:(UITableView *)tableView;
+
 
 @end

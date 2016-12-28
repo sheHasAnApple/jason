@@ -21,5 +21,8 @@
  *  生成二维码
  */
 +(UIImage *)imageOfQRFromURL:(NSString *)networkAddress codeSize:(CGFloat)codeSize;
-
+/**
+ *  生成纯色图片
+ */
++ (UIImage*) getImageWithColor:(UIColor*)color andHeight:(CGFloat)height;
 @end

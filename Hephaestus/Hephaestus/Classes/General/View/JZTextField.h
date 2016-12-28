@@ -7,10 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+@class JZTextField;
+@protocol JZTextFieldDelegate <NSObject>
+@optional
+-(void)JZTextField:(JZTextField *)textField didClickRightButton:(UIButton *)btn;
+
+@end
+
 
 @interface JZTextField : UITextField
 
-@property (nonatomic,weak) UIButton *rightBtn;
+@property (nonatomic, weak) id<JZTextFieldDelegate> JZDelegate;
 
 -(void)setBackgroundColor:(UIColor *)bgColor isRightBtn:(BOOL)rBOOL isLeftBtn:(BOOL)lBOOL placeholder:(NSString *)placehodlder;
 

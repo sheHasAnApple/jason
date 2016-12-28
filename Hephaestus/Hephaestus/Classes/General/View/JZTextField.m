@@ -17,14 +17,15 @@
     [self setBackgroundColor:bgColor];
     self.layer.cornerRadius = 5.0;
     [self setFont:[UIFont systemFontOfSize:12]];
+    self.tintColor = [UIColor lightGrayColor];
     
     if (rBOOL) {
         UIButton *photoBtn = [[UIButton alloc]init];
-        _rightBtn = photoBtn;
-        [photoBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e6aa", 16, [UIColor grayColor])] forState:UIControlStateNormal];
-        [photoBtn setFrame:CGRectMake(0, 0, 30, 16)];
+        [photoBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e6aa", 20, [UIColor grayColor])] forState:UIControlStateNormal];
+        [photoBtn setFrame:CGRectMake(0, 0, 30, 20)];
         [self setRightView:photoBtn];
         [self setRightViewMode:UITextFieldViewModeAlways];
+        [photoBtn addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (lBOOL) {
@@ -35,6 +36,13 @@
         [self setLeftViewMode:UITextFieldViewModeAlways];
     }
     
+}
+
+-(void)takePhoto:(UIButton *)btn
+{
+    if ([self.JZDelegate respondsToSelector:@selector(JZTextField:didClickRightButton:)]) {
+        [self.JZDelegate JZTextField:self didClickRightButton:btn];
+    }
 }
 
 

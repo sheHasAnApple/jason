@@ -6,4 +6,7 @@ pod 'Masonry'
 pod 'AFNetworking'
 pod 'MJRefresh'
 pod 'MBProgressHUD'
+pod "WeiboSDK", :git => "https://github.com/sinaweibosdk/weibo_ios_sdk.git"
+pod 'MJExtension'
+pod 'SDWebImage'
 end

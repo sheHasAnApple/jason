@@ -61,7 +61,6 @@
     [self.scanView stop];
 }
 
-
 #pragma mark - LXDScanCodeController
 /**
  *  扫描成功时回调

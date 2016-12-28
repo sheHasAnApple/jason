@@ -9,6 +9,8 @@
 #import "JZDefaultCell.h"
 #import "TBCityIconFont.h"
 #import "NSString+JZ.h"
+#import "Masonry.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface JZDefaultCell ()
 
@@ -64,13 +66,30 @@
     
     CGSize size = self.frame.size;
     
-    self.leftImage.frame = CGRectMake(10, (size.height-20)*0.5, 20, 20);
+    [self.leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(20, 20));
+        make.centerY.equalTo(self.mas_centerY);
+        make.left.equalTo(self.mas_left).offset(10);
+    }];
     
-    self.abcLab.frame = CGRectMake(40, (size.height-self.titleSize.height)*0.5, 100, self.titleSize.height);
+    [self.abcLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.left.equalTo(self.leftImage.mas_right).offset(10);
+        make.size.mas_equalTo(CGSizeMake(100, self.titleSize.height));
+    }];
     
-    self.rightImage.frame = CGRectMake(size.width-30, (size.height-20)*0.5, 20, 20);
+    [self.rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(20, 20));
+        make.centerY.equalTo(self.mas_centerY);
+        make.right.equalTo(self.mas_right).offset(-10);
+    }];
     
     self.line.frame = CGRectMake(0, size.height-1, size.width, 1);
+    [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(size.width, 1));
+        make.bottom.equalTo(self.mas_bottom);
+        make.top.equalTo(self.mas_bottom).offset(-1);
+    }];
     
 }
 

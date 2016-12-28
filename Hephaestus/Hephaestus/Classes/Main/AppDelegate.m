@@ -9,6 +9,10 @@
 #import "AppDelegate.h"
 #import "TBCityIconFont.h"
 #import "JZTabBarController.h"
+#import "weiboSDK.h"
+#import "WTThirdPartyLoginManager.h"
+
+#define WBAppKey @"1831618218"
 
 @interface AppDelegate ()
 
@@ -18,6 +22,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //微博
+    
+//    [WeiboSDK enableDebugMode:YES];
+    [WeiboSDK registerApp:WBAppKey];
+    
     //添加iconfont
     [TBCityIconFont setFontName:@"iconfont"];
     
@@ -30,6 +40,32 @@
     return YES;
 }
 
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [WeiboSDK handleOpenURL:url delegate:[WTThirdPartyLoginManager shareWTThirdPartyLoginManager]];
+}
+
+-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    return [WeiboSDK handleOpenURL:url delegate:[WTThirdPartyLoginManager shareWTThirdPartyLoginManager]];
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [WeiboSDK handleOpenURL:url delegate:[WTThirdPartyLoginManager shareWTThirdPartyLoginManager]];
+}
+
+//-(void)didReceiveWeiboResponse:(WBBaseResponse *)response
+//{
+//    NSLog(@"------------------");
+//    NSLog(@"%@",response);
+//    NSLog(@"------------------");
+//}
+//
+//-(void)didReceiveWeiboRequest:(WBBaseRequest *)request
+//{
+//    NSLog(@"request");
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

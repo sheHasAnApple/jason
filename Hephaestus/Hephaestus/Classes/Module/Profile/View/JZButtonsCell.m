@@ -11,10 +11,13 @@
 #import "TBCityIconFont.h"
 
 @interface JZButtonsCell ()
-
+{
+    NSArray *_titlesArr;
+}
 @property (nonatomic,strong) UIView *marginView;
 @property (nonatomic,strong) NSMutableArray *arr;
 @property (nonatomic,strong) NSMutableArray *lines;
+
 
 @end
 
@@ -33,10 +36,24 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self setUpSubViews];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
     }
     return self;
+}
+
+-(NSArray *)titlesArr
+{
+    if (_titlesArr == nil) {
+        _titlesArr = [NSMutableArray array];
+    }
+    return _titlesArr;
+}
+
+-(void)setTitlesArr:(NSArray *)titlesArr
+{
+    _titlesArr = titlesArr;
+    [self setUpSubViews];
 }
 
 -(void)setUpSubViews
@@ -50,22 +67,27 @@
         [self.lines addObject:view];
         [view setBackgroundColor:[UIColor colorWithRed:240/255.0 green:242/255.0 blue:245/255.0 alpha:1.0]];
     }
-    
+    /****
     [self addOneButtonWithImageName:@"\U0000e681" imageColor:[UIColor colorWithRed:248/255.0 green:204/255.0 blue:80/255.0 alpha:1.0] btnTitle:@"发布动态" tag:11];
     [self addOneButtonWithImageName:@"\U0000e6aa" imageColor:[UIColor colorWithRed:107/255.0 green:200/255.0 blue:211/255.0 alpha:1.0] btnTitle:@"我的相册" tag:12];
     [self addOneButtonWithImageName:@"\U0000e603" imageColor:[UIColor colorWithRed:299/255.0 green:93/255.0 blue:103/255.0 alpha:1.0] btnTitle:@"我的关注圈" tag:13];
+    ****/
+    
+    [self addOneButtonWithImageNameAndTitle:self.titlesArr[0] tag:11];
+    [self addOneButtonWithImageNameAndTitle:self.titlesArr[1] tag:12];
+    [self addOneButtonWithImageNameAndTitle:self.titlesArr[2] tag:13];
     
     self.marginView = [[UIView alloc]init];
     [self addSubview:self.marginView];
     [self.marginView setBackgroundColor:[UIColor colorWithRed:240/255.0 green:242/255.0 blue:245/255.0 alpha:1.0]];
-    
+
 }
 
--(void)addOneButtonWithImageName:(NSString *)imageName imageColor:(UIColor *)color btnTitle:(NSString *)btnTilte tag:(NSInteger)tag;
+-(void)addOneButtonWithImageNameAndTitle:(NSString *)title tag:(NSInteger)tag
 {
     JZButton *JZbtn = [[JZButton alloc]init];
-    [JZbtn setTitle:btnTilte forState:UIControlStateNormal];
-    [JZbtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(imageName, 30, color)] forState:UIControlStateNormal];
+    [JZbtn setTitle:title forState:UIControlStateNormal];
+    [JZbtn setImage:[UIImage imageNamed:title] forState:UIControlStateNormal];
     [JZbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     JZbtn.titleLabel.font = [UIFont systemFontOfSize:12.5];
     [JZbtn.titleLabel setTextColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0]];

@@ -11,9 +11,12 @@
 #import "TBCityIconFont.h"
 #import "JZSearchController.h"
 #import "LXDScanCodeController.h"
+#import "JZCameraController.h"
 #import <WebKit/WebKit.h>
 
-@interface JZHomeController ()<UITextFieldDelegate,LXDScanCodeControllerDelegate>
+#import "JZLoginViewController.h"
+
+@interface JZHomeController ()<UITextFieldDelegate,LXDScanCodeControllerDelegate,JZTextFieldDelegate>
 
 @property (nonatomic,weak) JZTextField *searchField;
 @property (nonatomic,strong) WKWebView *wkWebView;
@@ -27,7 +30,14 @@
     
     [self setUpNavHead];
     
+    JZLoginViewController *vc = [[JZLoginViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
     self.wkWebView = [[WKWebView alloc]initWithFrame:self.view.frame];
+    
+//    NSString *pathString = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+//    [self.wkWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:pathString]]];
+
     
     [self.wkWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"file:///Users/jianzhonghuang/Desktop/dist/html/app.html#/home"]]];
     
@@ -40,6 +50,7 @@
     [searchField setBackgroundColor:[UIColor whiteColor] isRightBtn:YES isLeftBtn:YES placeholder:@"请输入商品名称"];
     self.searchField = searchField;
     self.searchField.delegate = self;
+    self.searchField.JZDelegate = self;
     self.navigationItem.titleView = searchField;
     
     UIButton *scanBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 22)];
@@ -70,9 +81,15 @@
 {
     self.hidesBottomBarWhenPushed=YES;
     JZSearchController *search = [[JZSearchController alloc]init];
+    search.showCamera = YES;
     [self.navigationController pushViewController:search animated:YES];
     [self.searchField resignFirstResponder];
     self.hidesBottomBarWhenPushed = NO;
+}
+-(void)JZTextField:(JZTextField *)textField didClickRightButton:(UIButton *)btn
+{
+    JZCameraController *cameraVC = [[JZCameraController alloc]init];
+    [self presentViewController:cameraVC animated:YES completion:nil];
 }
 
 #pragma mark - scanController 代理
@@ -81,4 +98,6 @@
     NSLog(@"%@",codeInfo);
     [self.wkWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:codeInfo]]];
 }
+
+
 @end

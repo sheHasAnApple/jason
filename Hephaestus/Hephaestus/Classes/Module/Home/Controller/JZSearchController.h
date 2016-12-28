@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface JZSearchController : UIViewController
-
+@property(nonatomic, assign) BOOL showCamera;
 @end

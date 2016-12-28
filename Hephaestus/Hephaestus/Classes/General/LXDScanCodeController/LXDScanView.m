@@ -47,7 +47,6 @@ NSString * const LXDScanQRCodeMessageKey = @"LXDScanQRCodeMessageKey";
     if ([controller conformsToProtocol: @protocol(LXDScanViewDelegate)]) {
         scanView.delegate = (UIViewController<LXDScanViewDelegate> *)controller;
     }
-    
     return scanView;
 }
 
@@ -73,7 +72,6 @@ NSString * const LXDScanQRCodeMessageKey = @"LXDScanQRCodeMessageKey";
 {
     [self stop];
 }
-
 
 #pragma mark - operate
 /**

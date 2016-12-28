@@ -10,4 +10,5 @@
 
 @interface JZConcernController : JZBaseViewController
 
+
 @end
